@@ -2,7 +2,7 @@
 <H3>NAME : SANJAY C</H3>
 <H3>REGISTER NO : 212223240150</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE : 29/09/2025</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
