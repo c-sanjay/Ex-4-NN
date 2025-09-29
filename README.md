@@ -118,55 +118,45 @@ Normalize our dataset.
 
 ```PY
 import pandas as pd
-import sklearn
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
-df=pd.read_csv("Iris_data.csv")
-df.head()
+url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+names=['sepal-lenght','sepal-width','petal-length','petal-width','Class']
+irisdata=pd.read_csv(url,names=names)
 
-df.fillna(0, inplace=True)
+x=irisdata.iloc[:,0:4]
+y=irisdata['Class']
 
-X = df.iloc[:, 0:4]
-y = df['species']
+le=preprocessing.LabelEncoder()
+y_encoded=le.fit_transform(y)
 
-le = preprocessing.LabelEncoder()
-y_encoded = le.fit_transform(y)
+x_train,x_test,y_train,y_test=train_test_split(x,y_encoded,test_size=0.25,random_state=42)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.20, random_state=42)
+scaler=StandardScaler()
+scaler.fit(x_train)
+x_train=scaler.transform(x_train)
+x_test=scaler.transform(x_test)
 
-scaler = StandardScaler()
-scaler.fit(X_train)
-X_train = scaler.transform(X_train)
-X_test = scaler.transform(X_test)
+mlp=MLPClassifier(hidden_layer_sizes=(10,10,10),max_iter=1000)
+mlp.fit(x_train,y_train)
 
-mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
-mlp.fit(X_train, y_train)
+predictions=mlp.predict(x_test)
 
-predictions = mlp.predict(X_test)
+flower_predictions=le.inverse_transform(predictions)
 
-print(confusion_matrix(y_test, predictions))
-print(classification_report(y_test, predictions))
-
-print(predictions)
-
-df['species'].unique()
-
-dic={ 0:"Iris-setosa",1:"Iris-versicolor",2:"Iris-virginica"}
-
-predictions_name=[]
-for label in predictions:
-    predictions_name.append(dic[label])
-
-print(predictions_name)
+print(flower_predictions)
+print(confusion_matrix(y_test,predictions))
+print(classification_report(y_test,predictions))
 ```
 
 <H3>Output:</H3>
 
-Show your results here
+<img width="731" height="555" alt="image" src="https://github.com/user-attachments/assets/6142e68c-1485-4620-b780-05f5b82343cb" />
+
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
